@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socialabs</title>
+
+    <!-- Bootstrap & Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .split-container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .gradient-half {
+            flex: 1;
+            background: linear-gradient(135deg, #c50606, #ff4444, #c50606);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .gradient-half::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(255,255,255,0.1) 100%);
+        }
+        .welcome-content {
+            text-align: center;
+            color: white;
+            z-index: 2;
+            position: relative;
+        }
+        .welcome-content h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+        }
+        .welcome-content p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+        .form-half {
+            flex: 1;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .form-container {
+            width: 100%;
+            max-width: 400px;
+        }
+        .form-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        .form-header h2 {
+            color: #333;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+        .form-header p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        .form-control {
+            border: 2px solid #f0f0f0;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+        .form-control:focus {
+            border-color: #c50606;
+            box-shadow: 0 0 0 0.2rem rgba(197, 6, 6, 0.1);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #c50606, #ff4444);
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 2rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(197, 6, 6, 0.3);
+            background: linear-gradient(135deg, #b00505, #dd3333);
+        }
+        .toggle-link {
+            color: #c50606;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .toggle-link:hover {
+            color: #ff4444;
+            text-decoration: underline;
+        }
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e0e0e0;
+        }
+        .divider span {
+            background: white;
+            color: #999;
+            padding: 0 1rem;
+            font-size: 0.9rem;
+        }
+        .social-btn {
+            border: 2px solid #f0f0f0;
+            background: white;
+            color: #666;
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin: 0.25rem;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+        .social-btn:hover {
+            border-color: #c50606;
+            color: #c50606;
+            transform: translateY(-1px);
+        }
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .shape {
+            position: absolute;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        .shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        .shape:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+        .shape:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            bottom: 30%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        .hidden {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .split-container {
+                flex-direction: column;
+            }
+            .gradient-half {
+                flex: 0 0 40%;
+            }
+            .welcome-content h1 {
+                font-size: 2rem;
+            }
+            .form-half {
+                flex: 1;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="split-container">
+        <!-- Gradient Half -->
+        <div class="gradient-half">
+            <div class="floating-shapes">
+                <div class="shape"></div>
+                <div class="shape"></div>
+                <div class="shape"></div>
+            </div>
+            <div class="welcome-content">
+                <!-- <img src="../static/img/socialabs-logo.png" class="img-fluid"  width="512px"> -->
+                <!-- <h1><i class="fas fa-rocket"></i> Welcome</h1>
+                <p>Join our community and unlock amazing features</p> -->
+            </div>
+        </div>
+
+        <!-- Form Half -->
+        <div class="form-half">
+            <div class="form-container">
+                <!-- Login Form -->
+                <div id="loginForm">
+                    <div class="form-header">
+                        <h2>Sign In</h2>
+                        <p>Welcome back! Please sign in to your account</p>
+                    </div>
+                    {% block content %}
+                    <div class="container">
+                        {% for category, message in get_flashed_messages(with_categories=true) %}
+                            <div class="alert alert-{{ 'danger' if category == 'error' else 'success' if category == 'success' else 'info' if category == 'info' else 'warning' }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                        
+                        {% block page_content %}{% endblock %}
+                    </div>
+                    {% endblock %}
+                    <!-- Notice action="{{ url_for('login') }}" and method="post" -->
+                    <form method="post" action="{{ url_for('login') }}">
+                        <div class="mb-3">
+                            <input type="email"
+                                   name="email"
+                                   class="form-control"
+                                   placeholder="Email Address"
+                                   required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="password"
+                                   name="password"
+                                   class="form-control"
+                                   placeholder="Password"
+                                   required>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rememberMe" name="remember">
+                                <label class="form-check-label" for="rememberMe">Remember me</label>
+                            </div>
+                            <a href="#" class="toggle-link" style="font-size: 0.9rem;">Forgot Password?</a>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                        </button>
+                    </form>
+
+                    <!-- <div class="divider">
+                        <span>or continue with</span>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn social-btn">
+                            <i class="fab fa-google"></i>
+                        </button>
+                        <button class="btn social-btn">
+                            <i class="fab fa-facebook-f"></i>
+                        </button>
+                        <button class="btn social-btn">
+                            <i class="fab fa-twitter"></i>
+                        </button>
+                    </div> -->
+                    <div class="text-center mt-4">
+                        <p>Don't have an account?
+                            <a href="#" class="toggle-link" onclick="toggleForm()">Sign Up</a>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Register Form -->
+                <div id="registerForm" class="hidden">
+                    <div class="form-header">
+                        <h2>Create Account</h2>
+                        <p>Join us today! Please fill in the information below</p>
+                    </div>
+                    <!-- Already has action="{{ url_for('register') }}" and method="post" -->
+                    <form method="post" action="{{ url_for('register') }}">
+                        <div class="mb-3">
+                            <input type="text"
+                                   name="name"
+                                   class="form-control"
+                                   placeholder="Full Name"
+                                   required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="email"
+                                   name="email"
+                                   class="form-control"
+                                   placeholder="Email Address"
+                                   required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="password"
+                                   name="password"
+                                   class="form-control"
+                                   placeholder="Password"
+                                   required>
+                        </div>
+                        <!-- <div class="mb-3">
+                            <input type="password"
+                                   name="confirm_password"
+                                   class="form-control"
+                                   placeholder="Confirm Password"
+                                   required>
+                        </div> -->
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-user-plus me-2"></i>Create Account
+                        </button>
+                    </form>
+
+                    <!-- <div class="divider">
+                        <span>or continue with</span>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn social-btn">
+                            <i class="fab fa-google"></i>
+                        </button>
+                        <button class="btn social-btn">
+                            <i class="fab fa-facebook-f"></i>
+                        </button>
+                        <button class="btn social-btn">
+                            <i class="fab fa-twitter"></i>
+                        </button>
+                    </div> -->
+                    <div class="text-center mt-4">
+                        <p>Already have an account?
+                            <a href="#" class="toggle-link" onclick="toggleForm()">Sign In</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleForm() {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+
+            if (loginForm.classList.contains('hidden')) {
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+            } else {
+                loginForm.classList.add('hidden');
+                registerForm.classList.remove('hidden');
+            }
+        }
+
+        // Smooth opacity transition
+        document.addEventListener('DOMContentLoaded', function() {
+            const forms = document.querySelectorAll('#loginForm, #registerForm');
+            forms.forEach(form => {
+                form.style.transition = 'opacity 0.3s ease';
+            });
+        });
+
+        // Fake “processing” animation on submit (remove this if you actually submit)
+        document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();  
+            const button = this.querySelector('.btn-primary');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+            button.disabled = true;
+
+            setTimeout(() => {
+            button.innerHTML = originalText;
+            button.disabled = false;
+            // Now actually send the form to Flask:
+            this.submit();
+            }, 1500);
+        });
+        });
+    </script>
+</body>
+</html>

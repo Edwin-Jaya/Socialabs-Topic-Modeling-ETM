@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic Analysis Results - SocialScope</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --text-light: #7f8c8d;
+            --bg-light: #f8f9fa;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --socialabs-color: #c5060f;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--primary-color);
+            background-color: #ffffff;
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+        
+        .main-content {
+            min-height: calc(100vh - 200px);
+            padding-top: 10px;
+        }
+        
+        .page-header {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 3rem 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .page-subtitle {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+        
+        .back-btn {
+            padding: 0.6rem 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border: 2px solid #e9ecef;
+            border-radius: 50px;
+            background: white;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .back-btn:hover {
+            border-color: var(--socialabs-color);
+            color: var(--primary-color);
+            text-decoration: none;
+            transform: translateX(-2px);
+        }
+        
+        .dashboard-section {
+            padding: 3rem 0;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .section-title i {
+            color: var(--socialabs-color);
+        }
+        
+        .topics-table-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.06);
+            border: 1px solid #f1f3f4;
+            overflow: hidden;
+            margin-bottom: 3rem;
+        }
+        
+        .table-header {
+            background: var(--socialabs-color);
+            padding: 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .table-header h5 {
+            margin: 0;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .custom-table {
+            margin: 0;
+            border: none;
+        }
+        
+        .custom-table thead th {
+            background: white;
+            border-bottom: 2px solid #e9ecef;
+            border-top: none;
+            padding: 1.2rem 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 0.95rem;
+        }
+        
+        .custom-table tbody td {
+            padding: 1.2rem 1.5rem;
+            border-top: 1px solid #f1f3f4;
+            vertical-align: top;
+        }
+        
+        .custom-table tbody tr:hover {
+            background-color: rgba(52, 152, 219, 0.02);
+        }
+        
+        .topic-number {
+            background: var(--socialabs-color);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .topic-interpretation {
+            line-height: 1.6;
+            color: var(--primary-color);
+        }
+        
+        .tweets-section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.06);
+            border: 1px solid #f1f3f4;
+            overflow: hidden;
+        }
+        
+        .tweets-header {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .tweets-header h5 {
+            margin: 0;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .filter-container {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+            background: white;
+        }
+        
+        .filter-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .filter-label {
+            font-weight: 500;
+            color: var(--primary-color);
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+        
+        .filter-select {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 0.6rem 1rem;
+            font-size: 0.95rem;
+            background: white;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+            min-width: 180px;
+        }
+        
+        .filter-select:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.1);
+            outline: none;
+        }
+        
+        .tweets-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            min-height: 100vh;
+        }
+
+        .tweet-card {
+            background: #ffffff;
+            padding: 12px 16px;
+            border-bottom: 1px solid #eff3f4;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .tweet-card:hover {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .tweet-header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .tweet-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #1d9bf0;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .tweet-user-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .tweet-user-line {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .tweet-username {
+            font-weight: 700;
+            color: #0f1419;
+            font-size: 15px;
+            line-height: 20px;
+        }
+
+        .verified-badge {
+            width: 20px;
+            height: 20px;
+            margin-left: 2px;
+        }
+
+        .verified-badge svg {
+            width: 100%;
+            height: 100%;
+            fill: #1d9bf0;
+        }
+
+        .tweet-handle {
+            color: #536471;
+            font-size: 15px;
+            line-height: 20px;
+        }
+
+        .tweet-separator {
+            color: #536471;
+            font-size: 15px;
+            line-height: 20px;
+            margin: 0 4px;
+        }
+
+        .tweet-time {
+            color: #536471;
+            font-size: 15px;
+            line-height: 20px;
+        }
+
+        .tweet-menu {
+            width: 20px;
+            height: 20px;
+            margin-left: auto;
+            cursor: pointer;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s ease;
+        }
+
+        .tweet-menu:hover {
+            background-color: rgba(29, 155, 240, 0.1);
+        }
+
+        .tweet-menu svg {
+            width: 18.75px;
+            height: 18.75px;
+            fill: #536471;
+        }
+
+        .tweet-content {
+            margin-bottom: 12px;
+            margin-left: 52px;
+        }
+
+        .tweet-content p {
+            color: #0f1419;
+            font-size: 15px;
+            line-height: 20px;
+            margin: 0;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        .quoted-tweet {
+            border: 1px solid #cfd9de;
+            border-radius: 16px;
+            padding: 12px;
+            margin-top: 12px;
+            background: #ffffff;
+        }
+
+        .quoted-content {
+            color: #0f1419;
+            font-size: 15px;
+            line-height: 20px;
+            margin: 0;
+        }
+
+        .tweet-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-left: 52px;
+            max-width: 425px;
+        }
+
+        .tweet-action {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .tweet-action-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .action-button {
+            width: 34.75px;
+            height: 34.75px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s ease;
+        }
+
+        .action-button svg {
+            width: 18.75px;
+            height: 18.75px;
+            fill: #536471;
+        }
+
+        .tweet-action:hover .action-button {
+            background-color: rgba(29, 155, 240, 0.1);
+        }
+
+        .tweet-action:hover .action-button svg {
+            fill: #1d9bf0;
+        }
+
+        .tweet-action.retweet:hover .action-button {
+            background-color: rgba(0, 186, 124, 0.1);
+        }
+
+        .tweet-action.retweet:hover .action-button svg {
+            fill: #00ba7c;
+        }
+
+        .tweet-action.like:hover .action-button {
+            background-color: rgba(249, 24, 128, 0.1);
+        }
+
+        .tweet-action.like:hover .action-button svg {
+            fill: #f91880;
+        }
+
+        .action-count {
+            color: #536471;
+            font-size: 13px;
+            line-height: 16px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .tweet-action:hover .action-count {
+            color: #1d9bf0;
+        }
+
+        .tweet-action.retweet:hover .action-count {
+            color: #00ba7c;
+        }
+
+        .tweet-action.like:hover .action-count {
+            color: #f91880;
+        }
+
+        .no-tweets {
+            text-align: center;
+            padding: 80px 32px;
+            color: #536471;
+        }
+
+        .no-tweets-icon {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 32px;
+            opacity: 0.5;
+        }
+
+        .no-tweets-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: #536471;
+        }
+
+        .no-tweets h3 {
+            color: #0f1419;
+            font-size: 31px;
+            line-height: 36px;
+            font-weight: 800;
+            margin: 0 0 8px 0;
+        }
+
+        .no-tweets p {
+            font-size: 15px;
+            line-height: 20px;
+            margin: 0;
+        }
+
+        /* Remove topic badge and other custom elements to match X design */
+        .tweet-topic-badge {
+            display: none;
+        }
+
+        /* Topic color variations */
+        .tweet-card[data-topic="1"] .tweet-topic-badge {
+            background: linear-gradient(135deg, #1da1f2, #1991db);
+        }
+
+        .tweet-card[data-topic="2"] .tweet-topic-badge {
+            background: linear-gradient(135deg, #17bf63, #14a85f);
+        }
+
+        .tweet-card[data-topic="3"] .tweet-topic-badge {
+            background: linear-gradient(135deg, #f91880, #e91e63);
+        }
+
+        .tweet-card[data-topic="4"] .tweet-topic-badge {
+            background: linear-gradient(135deg, #ff6b35, #ff5722);
+        }
+
+        .tweet-card[data-topic="5"] .tweet-topic-badge {
+            background: linear-gradient(135deg, #794bc4, #673ab7);
+        }
+
+        .tweet-card[data-topic="6"] .tweet-topic-badge {
+            background: linear-gradient(135deg, #ffab00, #ff9800);
+        }
+
+        .tweet-card[data-topic="7"] .tweet-topic-badge {
+            background: linear-gradient(135deg, #00acc1, #0097a7);
+        }
+
+        .tweet-card[data-topic="8"] .tweet-topic-badge {
+            background: linear-gradient(135deg, #d32f2f, #c62828);
+        }
+
+        .tweet-card[data-topic="9"] .tweet-topic-badge {
+            background: linear-gradient(135deg, #388e3c, #2e7d32);
+        }
+
+        .tweet-card[data-topic="10"] .tweet-topic-badge {
+            background: linear-gradient(135deg, #7b1fa2, #6a1b9a);
+        }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            .tweets-container {
+                border-left: none;
+                border-right: none;
+                border-radius: 0;
+            }
+
+            .tweet-card {
+                padding: 12px;
+            }
+
+            .tweet-content {
+                margin-left: 0;
+                margin-top: 8px;
+            }
+
+            .tweet-actions {
+                margin-left: 0;
+            }
+
+            .tweet-topic-badge {
+                position: static;
+                display: inline-block;
+                margin-bottom: 8px;
+            }
+        }
+        
+        .stats-bar {
+            background: var(--bg-light);
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #e9ecef;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .filter-wrapper {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+            
+            .filter-select {
+                width: 100%;
+                min-width: auto;
+            }
+            
+            .custom-table thead th,
+            .custom-table tbody td {
+                padding: 1rem;
+            }
+     
+            .tweets-container {
+                max-width: 100%;
+            }
+            
+            .tweet-card {
+                padding: 12px;
+            }
+            
+            .tweet-content {
+                margin-left: 48px;
+            }
+            
+            .tweet-actions {
+                margin-left: 48px;
+            }
+            
+            .tweet-avatar {
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
+                margin-right: 8px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/" style="color: var(--primary-color); font-size: 1.5rem;">
+                <img src="../static/img/socialabs-logo.png" class="img-fluid"  width="150px">
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <!-- <li class="nav-item">
+                        <a class="nav-link active" href="/projects">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/analytics">Analytics</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/settings">Settings</a>
+                    </li> -->
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Log out</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="page-title"><br>Topic Analysis Results</h1>
+                    <p class="page-subtitle">Social Media Topic Modeling Analysis Dashboard</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <a href="{{url_for('projects')}}" class="back-btn">
+                        <i class="fas fa-arrow-left"></i>Back to Projects
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <!-- Topics Table Section -->
+            <section class="dashboard-section">
+                <h2 class="section-title">
+                    <i class="fas fa-list-ul"></i>
+                    Discovered Topics
+                </h2>
+                
+                <div class="topics-table-container">
+                    <div class="table-header">
+                        <h5>Topic Interpretations</h5>
+                    </div>
+                    <table class="table custom-table">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 120px;">Topic Number</th>
+                                <th scope="col">Topic Interpretation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for topic_data in topics|sort(attribute='topic') %}
+                            <tr>
+                                <td>
+                                    <span class="topic-number">{{ topic_data.topic }}</span>
+                                </td>
+                                <td class="topic-interpretation">
+                                    {{ topic_data.interpretation }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Social Media Posts Section -->
+            <section class="dashboard-section">
+                <h2 class="section-title">
+                    <i class="fas fa-comments"></i>
+                    Social Media Posts Analysis
+                </h2>
+                
+                <div class="tweets-section">
+                    <div class="tweets-header">
+                        <h5>Filtered Posts by Topic</h5>
+                    </div>
+                    
+                    <div class="filter-container">
+                        <div class="filter-wrapper">
+                            <label for="topicFilter" class="filter-label">
+                                <i class="fas fa-filter me-2"></i>Filter by Topic:
+                            </label>
+                            <select id="topicFilter" class="filter-select">
+                            <option value="all">All Topics</option>
+                            {% for t in topics | sort(attribute='topic') %}
+                            <option value="{{ t.topic }}">Topic {{ t.topic }}</option>
+                            {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="tweets-container" id="tweetList">
+                        {% if tweets %}
+                            {% for tw in tweets %}
+                            <div class="tweet-card" data-topic="{{ tw.topic }}" onclick="window.open('{{ tw.tweet_url }}', '_blank')">
+                                <div class="tweet-header">
+                                    <div class="tweet-avatar">
+                                        {% if tw.username %}
+                                            {{ tw.username[:1].upper() }}
+                                        {% else %}
+                                            U
+                                        {% endif %}
+                                    </div>
+                                    <div class="tweet-user-info">
+                                        <div class="tweet-user-line">
+                                            <span class="tweet-username">{{ tw.username or 'Unknown User' }}</span>
+                                            <div class="verified-badge">
+                                                <svg viewBox="0 0 24 24" aria-label="Verified account">
+                                                    <g><path d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91s-2.52-1.27-3.91-.81c-.66-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.33 2.19c-1.4-.46-2.91-.2-3.92.81s-1.26 2.52-.8 3.91c-1.31.67-2.2 1.91-2.2 3.34s.89 2.67 2.2 3.34c-.46 1.39-.21 2.9.8 3.91s2.52 1.27 3.91.81c.67 1.31 1.91 2.19 3.34 2.19s2.68-.88 3.34-2.19c1.39.46 2.9.2 3.91-.81s1.27-2.52.81-3.91c1.31-.67 2.19-1.91 2.19-3.34zm-11.71 4.2L6.8 12.46l1.41-1.42 2.26 2.26 4.8-5.23 1.47 1.36-6.2 6.77z"></path></g>
+                                                </svg>
+                                            </div>
+                                            <span class="tweet-handle">@{{ tw.username or 'unknown' }}</span>
+                                            <span class="tweet-separator">·</span>
+                                            <span class="tweet-time">{{ tw.created_at or '13h' }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="tweet-menu">
+                                        <svg viewBox="0 0 24 24" aria-label="More">
+                                            <g><path d="M3 12c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm9 2c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm7 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"></path></g>
+                                        </svg>
+                                    </div>
+                                </div>
+                                
+                                <div class="tweet-content">
+                                    <p>{{ tw.full_text or tw.text }}</p>
+                                    
+                                    {% if tw.is_quote_status and tw.quoted_status %}
+                                    <div class="quoted-tweet">
+                                        <p class="quoted-content">{{ tw.quoted_status.full_text or tw.quoted_status.text }}</p>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="tweet-actions">
+                                    <div class="tweet-action" title="Reply">
+                                        <div class="action-button">
+                                            <svg viewBox="0 0 24 24" aria-label="Reply">
+                                                <g><path d="M1.751 10c0-4.42 3.584-8.005 8.005-8.005h4.366c4.49 0 8.129 3.64 8.129 8.129s-3.64 8.129-8.129 8.129H9.618l-4.751 4.751c-1.24 1.24-3.355.365-3.355-1.384V10z"></path></g>
+                                            </svg>
+                                        </div>
+                                        <span class="action-count">{{ tw.reply_count or 0 }}</span>
+                                    </div>
+                                    
+                                    <div class="tweet-action retweet" title="Repost">
+                                        <div class="action-button">
+                                            <svg viewBox="0 0 24 24" aria-label="Repost">
+                                                <g><path d="M4.5 3.88l4.432 4.14-1.364 1.46L5.5 7.55V16c0 1.1.896 2 2 2H13v2H7.5c-2.209 0-4-1.791-4-4V7.55L1.432 9.48.068 8.02 4.5 3.88zM16.5 6H11V4h5.5c2.209 0 4 1.791 4 4v8.45l2.068-1.93 1.364 1.46-4.432 4.14-4.432-4.14 1.364-1.46 2.068 1.93V8c0-1.1-.896-2-2-2z"></path></g>
+                                            </svg>
+                                        </div>
+                                        <span class="action-count">{{ tw.retweet_count or 0 }}</span>
+                                    </div>
+                                    
+                                    <div class="tweet-action like" title="Like">
+                                        <div class="action-button">
+                                            <svg viewBox="0 0 24 24" aria-label="Like">
+                                                <g><path d="M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.805 1.09-.806-1.09C9.984 6.01 8.526 5.44 7.304 5.5c-1.243.07-2.349.78-2.91 1.91-.552 1.12-.633 2.78.479 4.82 1.074 1.97 3.257 4.27 7.129 6.61 3.87-2.34 6.052-4.64 7.126-6.61 1.111-2.04 1.03-3.7.477-4.82-.561-1.13-1.666-1.84-2.908-1.91zm4.187 7.69c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"></path></g>
+                                            </svg>
+                                        </div>
+                                        <span class="action-count">{{ tw.favorite_count or 0 }}</span>
+                                    </div>
+                                    
+                                    <div class="tweet-action" title="Views">
+                                        <div class="action-button">
+                                            <svg viewBox="0 0 24 24" aria-label="Views">
+                                                <g><path d="M8.75 21V3h2v18h-2zM18 21V8.5h2V21h-2zM4 21l.004-10h2L6 21H4zm9.248 0v-7h2v7h-2z"></path></g>
+                                            </svg>
+                                        </div>
+                                        <span class="action-count">24M</span>
+                                    </div>
+                                    
+                                    <div class="tweet-action-group">
+                                        <div class="tweet-action" title="Bookmark">
+                                            <div class="action-button">
+                                                <svg viewBox="0 0 24 24" aria-label="Bookmark">
+                                                    <g><path d="M4 4.5C4 3.12 5.119 2 6.5 2h11C18.881 2 20 3.12 20 4.5v18.44l-8-5.71-8 5.71V4.5zM6.5 4c-.276 0-.5.22-.5.5v14.56l6-4.29 6 4.29V4.5c0-.28-.224-.5-.5-.5h-11z"></path></g>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="tweet-action" title="Share">
+                                            <div class="action-button">
+                                                <svg viewBox="0 0 24 24" aria-label="Share">
+                                                    <g><path d="M12 2.59l5.7 5.7-1.41 1.42L13 6.41V16h-2V6.41l-3.3 3.3-1.41-1.42L12 2.59zM21 15l-.02 3.51c0 1.38-1.12 2.49-2.5 2.49H5.5C4.11 21 3 19.88 3 18.5V15h2v3.5c0 .28.22.5.5.5h12.98c.28 0 .5-.22.5-.5L19 15h2z"></path></g>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="no-tweets">
+                                <div class="no-tweets-icon">
+                                    <svg viewBox="0 0 24 24">
+                                        <g><path d="M23.643 4.937c-.835.37-1.732.62-2.675.733.962-.576 1.7-1.49 2.048-2.578-.9.534-1.897.922-2.958 1.13-.85-.904-2.06-1.47-3.4-1.47-2.572 0-4.658 2.086-4.658 4.66 0 .364.042.718.12 1.06-3.873-.195-7.304-2.05-9.602-4.868-.4.69-.63 1.49-.63 2.342 0 1.616.823 3.043 2.072 3.878-.764-.025-1.482-.234-2.11-.583v.06c0 2.257 1.605 4.14 3.737 4.568-.392.106-.803.162-1.227.162-.3 0-.593-.028-.877-.082.593 1.85 2.313 3.198 4.352 3.234-1.595 1.25-3.604 1.995-5.786 1.995-.376 0-.747-.022-1.112-.065 2.062 1.323 4.51 2.093 7.14 2.093 8.57 0 13.255-7.098 13.255-13.254 0-.2-.005-.402-.014-.602.91-.658 1.7-1.477 2.323-2.41z"></path></g>
+                                    </svg>
+                                </div>
+                                <h3>No posts found</h3>
+                                <p>There are no tweets available for this project yet.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="stats-bar">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span id="postsCount">Showing 5 of 5 posts</span>
+                            <span><i class="fas fa-chart-bar me-1"></i>Analysis Complete</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0 text-muted">&copy; 2025 SocialScope. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="text-muted me-3">Privacy Policy</a>
+                    <a href="#" class="text-muted">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Topic filter functionality
+        document.getElementById('topicFilter').addEventListener('change', function() {
+            const selected = this.value;
+            const tweets = document.querySelectorAll('#tweetList .tweet-card');
+            let visibleCount = 0;
+            let totalCount = tweets.length;
+            
+            tweets.forEach(card => {
+                if (selected === 'all' || card.getAttribute('data-topic') === selected) {
+                    card.style.display = '';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Update posts count
+            const postsCountElement = document.getElementById('postsCount');
+            if (selected === 'all') {
+                postsCountElement.textContent = `Showing ${totalCount} of ${totalCount} posts`;
+            } else {
+                postsCountElement.textContent = `Showing ${visibleCount} of ${totalCount} posts (Topic ${selected})`;
+            }
+            
+            // Show no results message if needed
+            if (visibleCount === 0) {
+                showNoResults();
+            } else {
+                hideNoResults();
+            }
+        });
+        
+        function showNoResults() {
+            const existingNoResults = document.querySelector('.no-tweets');
+            if (!existingNoResults) {
+                const noResultsDiv = document.createElement('div');
+                noResultsDiv.className = 'no-tweets';
+                noResultsDiv.id = 'noResults';
+                noResultsDiv.innerHTML = `
+                    <i class="fas fa-search"></i>
+                    <h5>No posts found</h5>
+                    <p>No posts match the selected topic filter.</p>
+                `;
+                document.getElementById('tweetList').appendChild(noResultsDiv);
+            }
+        }
+        
+        function hideNoResults() {
+            const noResults = document.getElementById('noResults');
+            if (noResults) {
+                noResults.remove();
+            }
+        }
+        
+        // Add smooth scrolling for better UX
+        document.querySelector('.filter-select').addEventListener('change', function() {
+            // Small delay to allow filtering to complete
+            setTimeout(() => {
+                const tweetsContainer = document.querySelector('.tweets-container');
+                tweetsContainer.scrollTop = 0;
+            }, 100);
+        });
+        
+        // Add loading animation when filtering (optional enhancement)
+        document.getElementById('topicFilter').addEventListener('change', function() {
+            const tweetsContainer = document.querySelector('.tweets-container');
+            tweetsContainer.style.opacity = '0.7';
+            
+            setTimeout(() => {
+                tweetsContainer.style.opacity = '1';
+            }, 200);
+        });
+    </script>
+</body>
+</html>

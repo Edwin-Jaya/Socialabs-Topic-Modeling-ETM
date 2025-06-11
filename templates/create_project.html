@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Project</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --text-light: #7f8c8d;
+            --bg-light: #f8f9fa;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+            --socialabs-color: #c5060f;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--primary-color);
+            background-color: #ffffff;
+        }
+        
+        .back-btn {
+            padding: 0.6rem 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border: 2px solid #e9ecef;
+            border-radius: 50px;
+            background: white;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .back-btn:hover {
+            border-color: var(--socialabs-color);
+            color: var(--primary-color);
+            text-decoration: none;
+            transform: translateX(-2px);
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+        
+        .main-content {
+            min-height: calc(100vh - 200px);
+            padding-top: 100px;
+        }
+        
+        .page-header {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 3rem 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .page-subtitle {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+        
+        .form-section {
+            padding: 4rem 0;
+        }
+        
+        .form-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            border: 1px solid #f1f3f4;
+            overflow: hidden;
+        }
+        
+        .form-header {
+            background: var(--socialabs-color);
+            padding: 2rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .form-header-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-header-subtitle {
+            color: white;
+            font-size: 0.95rem;
+        }
+        
+        .form-body {
+            padding: 2.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 2rem;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-label i {
+            margin-right: 0.5rem;
+            color: var(--socialabs-color);
+            width: 16px;
+        }
+        
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: #ffffff;
+        }
+        
+        .form-control:focus {
+            border-color: var(--socialabs-color);
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.1);
+            background-color: #ffffff;
+        }
+        
+        .form-control::placeholder {
+            color: #adb5bd;
+        }
+        
+        .form-text {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+        
+        .keywords-input-container {
+            position: relative;
+        }
+        
+        .keywords-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.8rem;
+            min-height: 40px;
+            padding: 0.5rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background-color: #ffffff;
+        }
+        
+        .keyword-tag {
+            background: var(--socialabs-color);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .keyword-tag .remove-tag {
+            cursor: pointer;
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+        
+        .keyword-tag .remove-tag:hover {
+            opacity: 1;
+        }
+        
+        .date-range-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .date-input-group {
+            position: relative;
+        }
+        
+        .date-input-group label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: var(--socialabs-color);
+            border: none;
+            border-radius: 50px;
+            padding: 0.8rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+        }
+        
+        .btn-primary:hover {
+            background: var(--success-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn-secondary {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 50px;
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--socialabs-color);
+            color: var(--primary-color);
+            background: white;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .loading-spinner {
+            display: none;
+            margin-left: 0.5rem;
+        }
+        
+        .error-message {
+            color: var(--danger-color);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        .success-message {
+            color: var(--success-color);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .form-body {
+                padding: 1.5rem;
+            }
+            
+            .date-range-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+            
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/" style="color: var(--primary-color); font-size: 1.5rem;">
+            <img src="../static/img/socialabs-logo.png" class="img-fluid"  width="150px">
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="/projects">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/analytics">Analytics</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/settings">Settings</a>
+                    </li> -->
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Log out</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="page-title"><br>Create New Project</h1>
+                    <p class="page-subtitle">Set up your topic modeling project with custom parameters</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <a href="{{url_for('projects')}}" class="back-btn">
+                        <i class="fas fa-arrow-left"></i>Back to Projects
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Form Section -->
+    <section class="form-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-10">
+                    <div class="form-container">
+                        <div class="form-header">
+                            <h2 class="form-header-title">Project Details</h2>
+                            <p class="form-header-subtitle">Provide the basic information and parameters for your new topic modeling project</p>
+                        </div>
+
+                        <div class="form-body">
+                            <form id="createProjectForm" method="POST" action="/api/projects/create">
+                                <!-- Project Title -->
+                                <div class="form-group">
+                                    <label for="projectTitle" class="form-label">
+                                        <i class="fas fa-heading"></i>
+                                        Project Title
+                                    </label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="projectTitle" 
+                                           name="title"
+                                           placeholder="Enter a descriptive title for your project"
+                                           required>
+                                    <div class="form-text">Choose a clear, descriptive name that helps you identify this project</div>
+                                    <div class="error-message" id="titleError"></div>
+                                </div>
+
+                                <!-- Project Description -->
+                                <div class="form-group">
+                                    <label for="projectDescription" class="form-label">
+                                        <i class="fas fa-align-left"></i>
+                                        Project Description
+                                    </label>
+                                    <textarea class="form-control" 
+                                              id="projectDescription" 
+                                              name="description"
+                                              rows="4"
+                                              placeholder="Describe the goals and scope of your topic modeling project"
+                                              required></textarea>
+                                    <div class="form-text">Explain what you want to analyze and what insights you're looking for</div>
+                                    <div class="error-message" id="descriptionError"></div>
+                                </div>
+
+                                <!-- Keywords -->
+                                <div class="form-group">
+                                    <label for="keywords" class="form-label">
+                                        <i class="fas fa-tags"></i>
+                                        Keyword
+                                    </label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="keywords" 
+                                           placeholder="Type keywords and press Enter">
+                                    <div class="keywords-tags" id="keywordsTags">
+                                        <!-- Keywords will be added here dynamically -->
+                                    </div>
+                                    <div class="form-text">Add relevant keyword to focus your analysis.</div>
+                                    <input type="hidden" name="keywords" id="keywordsHidden">
+                                    <div class="error-message" id="keywordsError"></div>
+                                </div>
+
+                                <!-- Date Range -->
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        Date Range
+                                    </label>
+                                    <div class="date-range-container">
+                                        <div class="date-input-group">
+                                            <label for="startDate" class="form-label">Start Date</label>
+                                            <input type="date" 
+                                                   class="form-control" 
+                                                   id="startDate" 
+                                                   name="start_date"
+                                                   required>
+                                        </div>
+                                        <div class="date-input-group">
+                                            <label for="endDate" class="form-label">End Date</label>
+                                            <input type="date" 
+                                                   class="form-control" 
+                                                   id="endDate" 
+                                                   name="end_date"
+                                                   required>
+                                        </div>
+                                    </div>
+                                    <div class="form-text">Select the time period for data collection and analysis</div>
+                                    <div class="error-message" id="dateError"></div>
+                                </div>
+
+                                <!-- Form Actions -->
+                                <div class="form-actions">
+                                    <a href="{{url_for('projects')}}" class="btn btn-secondary">
+                                        <i class="fas fa-times me-2"></i>Cancel
+                                    </a>
+                                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                                        <i class="fas fa-plus me-2"></i>Create Project
+                                        <div class="loading-spinner">
+                                            <i class="fas fa-spinner fa-spin"></i>
+                                        </div>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0 text-muted">&copy; 2025 socialabs. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="text-muted me-3">Privacy Policy</a>
+                    <a href="#" class="text-muted">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Keywords management
+        let keywords = [];
+        
+        const keywordsInput = document.getElementById('keywords');
+        const keywordsTags = document.getElementById('keywordsTags');
+        const keywordsHidden = document.getElementById('keywordsHidden');
+        
+        function addKeyword(keyword) {
+            keyword = keyword.trim().toLowerCase();
+            if (keyword && !keywords.includes(keyword)) {
+                keywords.push(keyword);
+                updateKeywordsDisplay();
+                updateHiddenInput();
+            }
+        }
+        
+        function removeKeyword(keyword) {
+            keywords = keywords.filter(k => k !== keyword);
+            updateKeywordsDisplay();
+            updateHiddenInput();
+        }
+        
+        function updateKeywordsDisplay() {
+            keywordsTags.innerHTML = '';
+            keywords.forEach(keyword => {
+                const tag = document.createElement('div');
+                tag.className = 'keyword-tag';
+                tag.innerHTML = `
+                    ${keyword}
+                    <span class="remove-tag" onclick="removeKeyword('${keyword}')">
+                        <i class="fas fa-times"></i>
+                    </span>
+                `;
+                keywordsTags.appendChild(tag);
+            });
+        }
+        
+        function updateHiddenInput() {
+            keywordsHidden.value = keywords.join(',');
+        }
+        
+        // Keywords input event listeners
+        keywordsInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ',') {
+                e.preventDefault();
+                addKeyword(this.value);
+                this.value = '';
+            }
+        });
+        
+        keywordsInput.addEventListener('blur', function() {
+            if (this.value.trim()) {
+                addKeyword(this.value);
+                this.value = '';
+            }
+        });
+        
+        // Date validation
+        const startDateInput = document.getElementById('startDate');
+        const endDateInput = document.getElementById('endDate');
+        
+        // Set max date to today
+        const today = new Date().toISOString().split('T')[0];
+        startDateInput.max = today;
+        endDateInput.max = today;
+        
+        startDateInput.addEventListener('change', function() {
+            endDateInput.min = this.value;
+            if (endDateInput.value && endDateInput.value < this.value) {
+                endDateInput.value = this.value;
+            }
+        });
+        
+        endDateInput.addEventListener('change', function() {
+            startDateInput.max = this.value;
+        });
+        
+        // Form validation and submission
+        document.getElementById('createProjectForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Clear previous errors
+            document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+            
+            let isValid = true;
+            
+            // Validate title
+            const title = document.getElementById('projectTitle').value.trim();
+            if (!title) {
+                showError('titleError', 'Project title is required');
+                isValid = false;
+            } else if (title.length < 3) {
+                showError('titleError', 'Project title must be at least 3 characters long');
+                isValid = false;
+            }
+            
+            // Validate description
+            const description = document.getElementById('projectDescription').value.trim();
+            if (!description) {
+                showError('descriptionError', 'Project description is required');
+                isValid = false;
+            } else if (description.length < 10) {
+                showError('descriptionError', 'Project description must be at least 10 characters long');
+                isValid = false;
+            }
+            
+            // Validate keywords
+            if (keywords.length === 0) {
+                showError('keywordsError', 'At least one keyword is required');
+                isValid = false;
+            }
+            
+            // Validate dates
+            const startDate = startDateInput.value;
+            const endDate = endDateInput.value;
+            
+            if (!startDate || !endDate) {
+                showError('dateError', 'Both start and end dates are required');
+                isValid = false;
+            } else if (new Date(startDate) > new Date(endDate)) {
+                showError('dateError', 'Start date must be before end date');
+                isValid = false;
+            }
+            
+            if (isValid) {
+                submitForm();
+            }
+        });
+        
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+        
+        function submitForm() {
+            const submitBtn = document.getElementById('submitBtn');
+            const loadingSpinner = submitBtn.querySelector('.loading-spinner');
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            loadingSpinner.style.display = 'inline-block';
+            
+            // Prepare form data
+            const formData = new FormData();
+            formData.append('title', document.getElementById('projectTitle').value.trim());
+            formData.append('description', document.getElementById('projectDescription').value.trim());
+            formData.append('keywords', keywords.join(','));
+            formData.append('start_date', startDateInput.value);
+            formData.append('end_date', endDateInput.value);
+            
+            // Submit form
+            fetch('/api/projects/create', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Redirect to projects page or show success message
+                    window.location.href = '/projects';
+                } else {
+                    throw new Error(data.message || 'Failed to create project');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error creating project: ' + error.message);
+            })
+            .finally(() => {
+                // Hide loading state
+                submitBtn.disabled = false;
+                loadingSpinner.style.display = 'none';
+            });
+        }
+    </script>
+</body>
+</html>
